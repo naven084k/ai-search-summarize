@@ -25,7 +25,7 @@ def add_document_chunks(chunks: list[dict]):
    
 
 
-def search_similar_chunks(query_embedding: list[float], top_k: int = 5):
+def search_similar_chunks(query_embedding: list[float], top_k: int = 1):
     results = collection.query(
         query_embeddings=[query_embedding],
         n_results=top_k

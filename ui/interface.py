@@ -24,8 +24,9 @@ def generative_qna(question, results, max_chunks=5, min_len=10):
 
     prompt_template = (
         "Answer the question in 2-3 sentences based on the context.\n\n"
-        "Context:\n{context}\n\n"
         "Question: {question}"
+        "Context:\n{context}\n\n"
+        
     )
 
     for r in results[:max_chunks]:
@@ -33,7 +34,7 @@ def generative_qna(question, results, max_chunks=5, min_len=10):
         prompt = prompt_template.format(context=context, question=question)
 
         try:
-            response = flan_generator(prompt, max_length=100, do_sample=False)
+            response = flan_generator(prompt, max_length=512, do_sample=False)
             answer = response[0]["generated_text"].strip()
 
             if (
@@ -149,7 +150,6 @@ if query:
 if "search_results" in st.session_state and run_search_button:
     st.markdown(f"### 🔍 Top matching chunks for: **{query}**")
     for i, r in enumerate(st.session_state["search_results"]):
-        st.markdown(f"**{i+1}. File:** {r['metadata'].get('source', 'unknown')}  —  Score: {r['score']:.3f}")
         st.markdown(f"Summary: {r['summary']}")
         with st.expander("Show original text"):
             st.markdown(r["text"])
